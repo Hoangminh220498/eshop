@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Repositories\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    protected $categoryRepository;
+
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {        
+        return $this->categoryRepository->getAll();
     }
 
     /**
@@ -34,7 +42,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->categoryRepository->create($request->all());
     }
 
     /**
@@ -45,7 +53,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->categoryRepository->find($id);
     }
 
     /**
@@ -68,7 +76,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->categoryRepository->find($id)->update($request);
     }
 
     /**
@@ -79,6 +87,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->categoryRepository->find($id)->destroy();
     }
 }

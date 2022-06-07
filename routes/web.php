@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -47,12 +48,12 @@ Route::put('/put', function () {
     return 'Mothod put';
 });
 
-Route::prefix('admin')->group(function(){
-    Route::get('post/{post}/comments/{comment}', function($postId, $commentId){
+Route::prefix('admin')->group(function () {
+    Route::get('post/{post}/comments/{comment}', function ($postId, $commentId) {
         return "postId: $postId - commentId: $commentId";
     });
 
-    Route::get('user/{name?}', function($name = 'john'){
+    Route::get('user/{name?}', function ($name = 'john') {
         return $name;
     });
 });
@@ -63,10 +64,13 @@ Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
 Route::resource('orderitems', OrderItemController::class);
 
-Route::get('/child', function(){
+Route::get('/child', function () {
     return view('child');
 });
 
-Route::group(['prefix' => 'admin'], function(){
+Route::group(['prefix' => 'admin'], function () {
     Route::resource('users', App\Http\Controllers\Admin\UserController::class, ['names' => 'admin.users']);
 });
+
+Route::get('/auth/google/redirect', [GoogleController::class, 'redirect']);
+Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
